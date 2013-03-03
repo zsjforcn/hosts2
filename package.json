@@ -1,0 +1,22 @@
+{
+  "name": "hosts2",
+  "version": "0.0.1",
+  "description": "a easy-to-use hosts file management tool for web developer",
+  "main": "hosts2",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": "",
+  "keywords": [
+    "hosts",
+    "hostsfile",
+    "host"
+  ],
+  "author": "smileherd",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "commander": "~1.1.1"
+  },
+  "devDependencies": {}
+}
