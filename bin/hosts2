@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var hosts2 = require('../lib/hosts2.js')
+var cli = require('commander')
+
+cli
+    .version('0.0.5')
+    .usage('[options] sub-command')
+    .option('-a --append', 'append mode')
+    .option('-o --overwrite', 'overwrite original hosts file')
+
+cli
+    .command('on <profile>')
+    .description('turn on the specific hosts profile')
+    .action(function(profile) {
+        hosts2.on(profile)
+        process.exit(0)
+    })
+
+cli
+    .command('reset')
+    .description('clear the host records added by <hosts2>')
+    .action(function() {
+        hosts2.reset()
+        process.exit(0)
+    })
+
+cli
+    .command('*')
+    .description('deploy the given env')
+    .action(function(env){
+        debug('deploying "%s"', env);
+    });
+
+cli.parse(process.argv)

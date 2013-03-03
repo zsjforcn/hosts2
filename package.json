@@ -1,12 +1,18 @@
 {
   "name": "hosts2",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "a easy-to-use hosts file management tool for web developer",
-  "main": "hosts2",
+  "main": "./lib/hosts2.js",
+  "bin": {
+    "hosts2": "./bin/hosts2"
+  },
   "scripts": {
     "test": "test"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:smileherd/hosts2.git"
+  },
   "keywords": [
     "hosts",
     "hostsfile",
