@@ -6,8 +6,29 @@ var cli = require('commander')
 cli
     .version('0.0.5')
     .usage('[options] sub-command')
-    .option('-a --append', 'append mode')
-    .option('-o --overwrite', 'overwrite original hosts file')
+    // .option('-a --append', 'append mode')
+    // .option('-o --overwrite', 'overwrite original hosts file')
+
+cli
+    .command('add <profile> [hostsStr]')
+    .action(function(profile, hostsStr) {
+        hosts2.add(profile, hostsStr)
+        process.exit(0)
+    })
+
+cli
+    .command('remove <profile>')
+    .action(function(profile) {
+        cli.confirm('delete this profile permanently? [y or n]: ', function(ok) {
+            if (ok) {
+                hosts2.remove(profile)
+            } else {
+                console.log('job canceled')
+            }
+
+            process.exit(0)
+        })
+    })
 
 cli
     .command('on <profile>')
