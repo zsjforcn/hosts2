@@ -1,6 +1,6 @@
 {
   "name": "hosts2",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "a easy-to-use hosts file management tool for web developer",
   "main": "./lib/hosts2.js",
   "bin": {

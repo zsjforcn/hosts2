@@ -4,24 +4,38 @@ var hosts2 = require('../lib/hosts2.js')
 var cli = require('commander')
 
 cli
-    .version('0.0.5')
+    .version('0.0.8')
     .usage('[options] sub-command')
-    // .option('-a --append', 'append mode')
-    // .option('-o --overwrite', 'overwrite original hosts file')
+    // .option('-a, --append', 'append mode')
+    // .option('-o, --overwrite', 'overwrite original hosts file')
+    .option('-q, --quiet', 'only list profiles name')
 
+// add profile
 cli
     .command('add <profile> [hostsStr]')
+    .description('add profile to hosts2')
     .action(function(profile, hostsStr) {
-        hosts2.add(profile, hostsStr)
+        try {
+            hosts2.add(profile, hostsStr)
+        } catch (e) {
+            console.error(e)
+        }
+
         process.exit(0)
     })
 
+// remove profile
 cli
     .command('remove <profile>')
+    .description('remove profile from hosts2')
     .action(function(profile) {
         cli.confirm('delete this profile permanently? [y or n]: ', function(ok) {
             if (ok) {
-                hosts2.remove(profile)
+                try {
+                    hosts2.remove(profile)
+                } catch (e) {
+                    console.error(e)
+                }
             } else {
                 console.log('job canceled')
             }
@@ -30,19 +44,65 @@ cli
         })
     })
 
+// get profile info
 cli
-    .command('on <profile>')
-    .description('turn on the specific hosts profile')
-    .action(function(profile) {
-        hosts2.on(profile)
+    .command('ls')
+    .description('ls [profile...], list profiles given by [profile], list all if no profiles provided')
+    .action(function() {
+        var profilesInfo = ''
+
+        try {
+            profilesInfo = hosts2.get(cli.args.slice(0, cli.args.length - 1))
+        } catch (e) {
+            console.error(e)
+        }
+
+        if (!profilesInfo) {
+            console.log('no profiles exsit!\n')
+            process.exit(0)
+        }
+
+        if (cli.quiet) {
+            for (profileName in profilesInfo) {
+                console.log(profileName)
+            }
+        } else {
+            for (profileName in profilesInfo) {
+                console.log('%s:', profileName)
+                console.log(profilesInfo[profileName], '\n')
+            }
+        }
+
         process.exit(0)
     })
 
+// switch to speicific profile
+cli
+    .command('on')
+    .description('on <profile...>, turn on hosts profiles')
+    .action(function(profiles) {
+        profiles = cli.args.slice(0, cli.args.length - 1)
+
+        try {
+            hosts2.on(profiles)
+        } catch (e) {
+            console.error(e)
+        }
+
+        process.exit(0)
+    })
+
+// clean hosts maintained by <hosts2>
 cli
     .command('reset')
     .description('clear the host records added by <hosts2>')
     .action(function() {
-        hosts2.reset()
+        try {
+            hosts2.reset()
+        } catch (e) {
+            console.error(e)
+        }
+
         process.exit(0)
     })
 
